@@ -1,33 +1,51 @@
-FROM jenkins/agent:latest-jdk11
+FROM jenkins/ssh-agent:jdk17
 
 USER root
 
-# Install system dependencies for Cypress
+# Install dependencies for Cypress + Chrome/Firefox
 RUN apt-get update && apt-get install -y \
     curl \
     unzip \
+    wget \
+    gnupg \
     xvfb \
     libgtk2.0-0 \
     libgbm1 \
     libnss3 \
     libxss1 \
     libasound2 \
+    ca-certificates \
     fonts-liberation \
-    libappindicator3-1 \
+    chromium \
+    libayatana-appindicator3-1 \
     xdg-utils \
+    firefox-esr \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js via nvm
-ENV NVM_DIR=/root/.nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
-    && . "$NVM_DIR/nvm.sh" \
-    && nvm install 20 \
-    && nvm alias default 20 \
-    && nvm use default
+# Verify installs
+RUN chromium --version && firefox --version
 
-ENV PATH=$NVM_DIR/versions/node/v20.0.0/bin:$PATH
+# Install Node.js (LTS)
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs \
+    && npm --version && node --version
 
-# Install Cypress globally + reporters
-RUN npm install -g cypress cypress-iframe cypress-mochawesome-reporter
-
+# Switch to jenkins user
 USER jenkins
+WORKDIR /home/jenkins
+
+# Copy project dependency files and install
+COPY package.json package-lock.json* ./
+RUN npm ci && npx cypress install
+
+# Cache + PATH
+ENV CYPRESS_CACHE_FOLDER=/home/jenkins/.cache/Cypress
+ENV PATH=$PATH:/home/jenkins/node_modules/.bin
+
+# Optional: wrap Cypress in xvfb for GUI tests
+USER root
+RUN echo "xvfb-run -a \$@" > /usr/local/bin/xvfb-cypress \
+    && chmod +x /usr/local/bin/xvfb-cypress
+USER jenkins
+
+WORKDIR /app
