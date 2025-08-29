@@ -4,18 +4,12 @@ const generate = require("mochawesome-report-generator");
 
 module.exports = defineConfig({
   projectId: "j4ci1d",
- reporter: 'cypress-mochawesome-reporter',
+ reporter: 'mochawesome',
  reporterOptions: {
-  reportDir: "cypress/reports/html",
-  overwrite: true,
-  html: true,
-  json: true,
-  charts: true,
-  reportPageTitle: 'Cypress E2E test',
-  embeddedScreenshots: true,
-  inlineAssets: true,
-  videoOnFailOnly:true,
-  saveAllAttempts: false,
+  reportDir: "cypress/reports/mochawesome-report",
+  overwrite: false,
+  html: false,
+  json: true
 },
  env:{
     url: "https://rahulshettyacademy.com" 
