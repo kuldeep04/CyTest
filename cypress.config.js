@@ -4,10 +4,13 @@ const generate = require("mochawesome-report-generator");
 
 module.exports = defineConfig({
   projectId: "j4ci1d",
- reporter: 'mochawesome',
+ reporter: 'cypress-mochawesome-reporter',
  reporterOptions: {
   reportDir: "cypress/reports/mochawesome-report",
-  overwrite: false,
+  overwrite: true,
+  embeddedScreenshots: true,
+  inlineAssets: true,
+  saveJson:true,
   html: false,
   json: true
 },
