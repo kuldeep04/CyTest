@@ -6,8 +6,9 @@
   "scripts": {
     "test": "npx cypress run",
     "e2e:chrome": "npx cypress run --browser chromium",
-    "e2e:firefox": "cypress run --browser firefox",
-    "runOnCloud": "npx cypress run --record --key c5851555-e28f-4ec3-aa67-88a39279759a --browser chrome"
+    "e2e:firefox": "npx cypress run --browser firefox",
+    "runOnCloud": "npx cypress run --record --key c5851555-e28f-4ec3-aa67-88a39279759a --browser chrome",
+    "e2e": "npx cypress run -spec \"cypress/integration/testExamples/end2end.js\""
   },
   "keywords": [],
   "author": "",
