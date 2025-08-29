@@ -12,7 +12,7 @@ module.exports = defineConfig({
   saveAllAttempts: false,
 },
  env:{
-    url: "https://rahulshettyacademy.com"
+    url: "https://rahulshettyacademy.com" 
  },
  retries:{
   runMode: 2,
