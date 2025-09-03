@@ -7,7 +7,7 @@
     "test": "npx cypress run",
     "e2e:chrome": "npx cypress run --browser chromium --reporter cypress-mochawesome-reporter",
     "e2e:firefox": "npx cypress run --browser firefox --reporter cypress-mochawesome-reporter",
-    "runOnCloud": "npx cypress run --record --key c5851555-e28f-4ec3-aa67-88a39279759a --browser chrome",
+    "runOnCloud": "npx cypress run --record --key c5851555-e28f-4ec3-aa67-88a39279759a --parallel",
     "e2e": "npx cypress run --spec \"cypress/integration/testExamples/end2end.js\" --reporter cypress-mochawesome-reporter"
   },
   "keywords": [],
